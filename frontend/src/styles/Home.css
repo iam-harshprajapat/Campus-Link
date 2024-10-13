@@ -1,0 +1,138 @@
+.h-container {
+    min-height: 100vh;
+    height: auto;
+    background-color: #F9F9F9;
+    padding: 0;
+}
+
+.h-navbar {
+    background-color: #2B3467;
+    height: 50px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    position: sticky;
+}
+
+.h-logo {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+}
+
+.h-logo h5 {
+    font-size: 18px;
+    font-weight: 800;
+    margin-top: 4px;
+    color: #fff;
+}
+
+.h-logo img {
+    height: 50px;
+}
+
+.h-search-bar {
+    height: 60%;
+    width: 22%;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    padding-left: 25px;
+    gap: 18px;
+    background-color: #fff;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+}
+
+.h-search-bar img {
+    height: 19px;
+}
+
+.h-search-bar input {
+    height: 100%;
+    width: 100%;
+    background-color: transparent;
+    outline: none;
+    border: none;
+    font-weight: 400;
+    font-size: 20px;
+}
+
+.h-other-icons {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 50px;
+    height: 100%;
+    width: 300px;
+}
+
+.h-other-icons .h-other-img {
+    /* background-color: red; */
+    height: 80%;
+    width: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &&:hover {
+        background-color: #455196;
+    }
+}
+
+.h-other-icons img {
+    height: 25px;
+    -webkit-filter: drop-shadow(0px 0px 0 #fff) drop-shadow(0px 0px 0 #fff);
+    filter: drop-shadow(0px 0px 0 #fff) drop-shadow(0px 0px 0 #fff);
+
+}
+
+
+/* ---------------------------------------------------------------------------------
+--------------------------------------SIDEBAE------------------------------------
+--------------------------------------------------------------------------------- */
+.h-sidebar {
+    height: 100vh;
+    width: 300px;
+    background-color: #fff;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    position: sticky;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.h-sidebar a {
+    width: 100%;
+    text-decoration: none;
+}
+
+.h-menu {
+    width: 100%;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    gap: 20px;
+    cursor: pointer;
+    padding: 7px 0;
+
+    &:hover {
+        background-color: #d3d3d3;
+        transition: 0.3s;
+    }
+}
+
+.h-menu img {
+    height: 35px;
+    margin-left: 15px;
+}
+
+.h-menu h3 {
+    color: #2B3467;
+    margin-top: 8px;
+    font-size: 25px;
+}

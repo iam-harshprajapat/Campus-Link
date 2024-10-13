@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+
+.innerContainer {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+}
+
+.box1 {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    margin-top: 20px;
+    width: 100%;
+    border-bottom: 2px solid rgb(219, 219, 219);
+}
+
+
+.box1 h1 {
+    font-family: Josefin sans;
+    font-weight: 900;
+    font-size: 30px;
+    color: #2B3467;
+    margin-left: 20px;
+
+}
+
+.box1 p {
+    margin-left: 20px;
+    font-family: Josefin sans;
+    font-size: 20px;
+    font-weight: 300;
+}
+
+.box1 a {
+    text-decoration: none;
+    font-weight: 400;
+    padding: 5px;
+    border-radius: 8px;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+.box2 {
+    display: flex;
+    justify-content: center;
+    height: 80%;
+}
