@@ -1,0 +1,72 @@
+.note-section {
+    height: 100vh;
+}
+
+
+.notes-row {
+    /* background-color: red; */
+    height: 160px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: start;
+    padding: 10px;
+}
+
+.notes-folder {
+    /* background-color: green; */
+    height: 100%;
+    width: 150px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    gap: 10px;
+    cursor: pointer;
+
+    &:hover {
+        transition: 0.2s;
+        background-color: #2b34672d;
+        border: 1px solid #2B3467;
+    }
+}
+
+.notes-folder h5 {
+    text-align: center;
+}
+
+.note-back-btn {
+    background-color: transparent;
+    border: none;
+    color: #2B3467;
+    margin: 20px 0 0 20px;
+    font-size: 18px;
+
+    &:hover {
+        color: rgb(0, 182, 206);
+        text-decoration: underline;
+    }
+}
+
+.note-upload-box {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    user-select: none;
+}
+
+.note-upload-box label {
+    width: 80px;
+    font-size: 18px;
+}
+
+.note-upload-box input {
+    margin: 0;
+    padding: 0;
+    width: 50%;
+    background-color: transparent;
+}
