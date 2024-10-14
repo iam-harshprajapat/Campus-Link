@@ -79,4 +79,93 @@ const likePost = asyncHandler(async (req, res) => {
 });
 
 
-module.exports = { createPost, likePost };
+// @desc    Add a comment to a post
+// @route   POST /api/posts/:postId/comments
+// @access  Private
+const addComment = asyncHandler(async (req, res) => {
+    const { text } = req.body;
+    const { postId } = req.params;
+
+    if (!text) {
+        return res.status(400).json({ success: false, message: 'Comment text is required' });
+    }
+
+    try {
+        const post = await Post.findById(postId);
+
+        if (!post) {
+            return res.status(404).json({ success: false, message: 'Post not found' });
+        }
+
+        // Add new comment
+        const newComment = {
+            text,
+            postedBy: req.user.id,
+            createdAt: Date.now(),
+        };
+
+        post.comments.push(newComment);
+        await post.save();
+
+        res.status(201).json({ success: true, comment: newComment });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Server Error' });
+    }
+});
+
+// @desc    Delete a comment
+// @route   DELETE /api/posts/:postId/comments/:commentId
+// @access  Private
+const deleteComment = asyncHandler(async (req, res) => {
+    const { postId, commentId } = req.params;
+    const userId = req.user.id; // Logged-in user ID
+
+    // Find the post by ID
+    const post = await Post.findById(postId);
+    if (!post) {
+        return res.status(404).json({ success: false, message: 'Post not found' });
+    }
+
+    // Find the comment within the post
+    const comment = post.comments.id(commentId);
+    if (!comment) {
+        return res.status(404).json({ success: false, message: 'Comment not found' });
+    }
+
+    // Check if the user is either the owner of the comment or the owner of the post
+    if (comment.postedBy.toString() !== userId.toString() && post.createdBy.toString() !== userId.toString()) {
+        return res.status(403).json({ success: false, message: 'You are not authorized to delete this comment' });
+    }
+
+    // Remove the comment using pull
+    post.comments = post.comments.filter((c) => c._id.toString() !== commentId);
+
+    // Save the updated post
+    await post.save();
+
+    res.status(200).json({ success: true, message: 'Comment deleted successfully' });
+});
+
+// @desc    Get all comments for a post
+// @route   GET /api/posts/:postId/comments
+// @access  Private
+const getComments = asyncHandler(async (req, res) => {
+    const { postId } = req.params;
+
+    try {
+        const post = await Post.findById(postId).populate('comments.postedBy', 'username email');
+
+        if (!post) {
+            return res.status(404).json({ success: false, message: 'Post not found' });
+        }
+
+        res.status(200).json({ success: true, comments: post.comments });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Server Error' });
+    }
+});
+
+
+module.exports = { createPost, likePost, addComment, deleteComment, getComments };
