@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { uploadNote } from '../../redux/features/notes/noteAction';
 import { toast } from 'react-toastify';
 
 const UploadNotes = ({ closeModal }) => {
     const dispatch = useDispatch();
-    const { loading, error, success } = useSelector((state) => state.note);
+    const { loading } = useSelector((state) => state.note);
 
     const [noteData, setNoteData] = useState({
         course: '',

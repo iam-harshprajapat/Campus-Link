@@ -12,7 +12,7 @@ const adminRoute = require('./routes/adminRoute')
 const { scheduleCleanupJob } = require('./scheduledJobs/cleanupJob');
 const authMiddleware = require('./middlewares/authMiddleware');
 const adminMiddleware = require('./middlewares/adminMiddleware');
-
+const postRoutes = require('./routes/postRoutes');
 // Load environment variables
 dotenv.config();
 
@@ -35,7 +35,8 @@ app.use('/api/auth', authRoutes);
 app.use('/api/notes', authMiddleware, notesRoutes);
 app.use('/api/connections', authMiddleware, connectionRequestRoutes);
 app.use('/api/admin', adminMiddleware, adminRoute);
-
+app.use('/api/post', authMiddleware, postRoutes)
+app.use('api/post', authMiddleware, postRoutes);
 
 // Default Route
 app.get('/', (req, res) => {

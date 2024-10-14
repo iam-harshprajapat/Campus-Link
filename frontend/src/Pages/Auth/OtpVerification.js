@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';  // Import useNavigate
 import { useDispatch, useSelector } from 'react-redux';
 import { OtpVerify, ResendOtp } from '../../redux/features/otp-verification/OtpAction';
-import { blockResendOtp, allowResendOtp, resetResendState } from '../../redux/features/otp-verification/OtpSlice';
+import { blockResendOtp, allowResendOtp } from '../../redux/features/otp-verification/OtpSlice';
 import '../../styles/otpVerification.css';
 import { toast } from 'react-toastify';
 
@@ -53,7 +53,7 @@ const OtpPage = () => {
             toast.success(message)
             navigate('/');  // Redirect to home page after successful OTP verification
         }
-    }, [success, navigate]);
+    }, [success, navigate, message]);
 
     return (
         <>

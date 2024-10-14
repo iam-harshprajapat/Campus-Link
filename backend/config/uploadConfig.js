@@ -11,6 +11,8 @@ const storage = multer.diskStorage({
             uploadPath = 'uploads/notes/';
         } else if (file.fieldname === 'profilePicture') {
             uploadPath = 'uploads/user/';
+        } else if (file.fieldname === 'postImage') {
+            uploadPath = 'uploads/posts/';
         }
 
         cb(null, uploadPath);
@@ -19,15 +21,6 @@ const storage = multer.diskStorage({
         cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
     }
 });
-
-// Initialize upload
-const upload = multer({
-    storage: storage,
-    limits: { fileSize: 1000000 * 30 }, // 30MB file limit
-    fileFilter: function (req, file, cb) {
-        checkFileType(file, cb);
-    }
-}).single('noteFile'); // You can change 'noteFile' to 'profilePicture' when needed
 
 // Check file type
 function checkFileType(file, cb) {
@@ -42,4 +35,35 @@ function checkFileType(file, cb) {
     }
 }
 
-module.exports = upload;
+// Initialize upload for different fields
+const uploadNoteFile = multer({
+    storage: storage,
+    limits: { fileSize: 1000000 * 30 }, // 30MB file limit
+    fileFilter: function (req, file, cb) {
+        checkFileType(file, cb);
+    }
+}).single('noteFile');
+
+const uploadProfilePicture = multer({
+    storage: storage,
+    limits: { fileSize: 1000000 * 30 },
+    fileFilter: function (req, file, cb) {
+        checkFileType(file, cb);
+    }
+}).single('profilePicture');
+
+
+const uploadPostImage = multer({
+    storage: storage,
+    limits: { fileSize: 1000000 * 30 },
+    fileFilter: function (req, file, cb) {
+        checkFileType(file, cb);
+    }
+}).single('postImage'); // Using 'postImage' for post uploads
+
+// Export all upload functions
+module.exports = {
+    uploadNoteFile,
+    uploadProfilePicture,
+    uploadPostImage
+};
