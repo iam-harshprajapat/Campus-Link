@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import '../styles/Home.css'
 import logo from '../assets/images/graduation-cap.png'
 import search from '../assets/images/search.png'
@@ -10,20 +10,9 @@ import speaker from '../assets/images/speaker.png'
 import live from '../assets/images/live-stream.png'
 import link from '../assets/images/link.png'
 import user from '../assets/images/profile.png'
-import { Link, useNavigate } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
-import { getCurrentUser } from '../redux/features/login/authAction'
+import { Link } from 'react-router-dom'
 
 const HomePage = () => {
-    const dispatch = useDispatch()
-    const navigate = useNavigate();
-    const { user } = useSelector((state) => state.auth);
-    useEffect(() => {
-        dispatch(getCurrentUser());
-    }, []);
-    const handleProfileClick = () => {
-        navigate(`/profile/${user.id}`)
-    }
     return (
         <>
             <div className='container-fluid h-container'>

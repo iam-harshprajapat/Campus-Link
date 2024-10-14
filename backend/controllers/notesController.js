@@ -1,12 +1,12 @@
 const asyncHandler = require('express-async-handler');
-const upload = require('../config/uploadConfig');
+const { uploadNoteFile } = require('../config/uploadConfig');
 const Note = require('../models/Note');
 
 // @desc    Upload a new note
 // @route   POST /api/notes/upload
 // @access  Private
 const uploadNote = asyncHandler((req, res) => {
-    upload(req, res, async (err) => {
+    uploadNoteFile(req, res, async (err) => {
         if (err) {
             return res.status(400).json({ success: false, message: err });
         } else {
