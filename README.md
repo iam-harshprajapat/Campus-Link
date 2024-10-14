@@ -1,17 +1,41 @@
 <br/>
 <div align="center">
 
-<h1 align="center">Campus Link</h1>
+<h1 align="center" color="blue">Campus Link</h1>
 <p align="center">
 A University Social Networking Platform
 
 <br/>
 <br/>
   
-<a href="s.harshprajapat@gmail.com">Report Bug .</a>
+<a href="s.harshprajapat@gmail.com">Report Bug </a>.
 <a href="s.harshprajapat@gmail.com">Request Feature</a>
 </p>
 </div>
+
+## Screenshots of the project
+
+<br/>
+
+**Login page:**
+![LoginPage](https://res.cloudinary.com/driqu2cgm/image/upload/v1728927986/login_buh91w.png "Login Page")
+
+**Wizard Registration form:**<br/>
+![RegistrationPage](https://res.cloudinary.com/driqu2cgm/image/upload/v1728930652/Untitled_design_uihyih.png "Registration Page")
+
+**Notes Sharing Feature**
+![NotesPage](https://res.cloudinary.com/driqu2cgm/image/upload/v1728930954/Notes_ixqeix.png "Notes Sharing page")
+![NotesPage](https://res.cloudinary.com/driqu2cgm/image/upload/v1728930954/uploadNotes_l9tkyr.png "Notes Uploading")
+The Notes are organised in form of file structure:
+
+```css
+    ├── Courses (BCA/BTech)
+        ├── Semesters (semester-1/semester-2)
+            ├── Subjects (operating system/ Maths)
+                ├── Notes files (.pdf/.xls/.png/.jpg/.ppt/.docs)
+```
+
+<br/><br/>
 
 ### Prerequisites
 
