@@ -41,6 +41,22 @@ const userSchema = mongoose.Schema(
                 return this.role === 'student';
             },
         },
+        profilePicture: {
+            type: String,
+            default: null,//path to the uploaded profile photo
+        },
+        branch: {
+            type: String,
+            default: '',
+        },
+        bio: {
+            type: String,
+            default: '',
+        },
+        city: {
+            type: String,
+            default: '',
+        },
         otp: {
             type: String,
             required: false,
