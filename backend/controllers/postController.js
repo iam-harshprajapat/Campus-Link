@@ -1,6 +1,8 @@
 const asyncHandler = require('express-async-handler');
 const Post = require('../models/Post');
 const { uploadPostImage } = require('../config/uploadConfig');
+const fs = require('fs');
+const path = require('path');
 
 // @desc    Create a new post (text or photo)
 // @route   POST /api/posts
@@ -167,5 +169,88 @@ const getComments = asyncHandler(async (req, res) => {
     }
 });
 
+//@desc     Get all the users who like the post
+//@route    GET /api/posts/:postId/likes
+//@access   Private
+const getUsersWhoLikedPost = asyncHandler(async (req, res) => {
+    const { postId } = req.params;
 
-module.exports = { createPost, likePost, addComment, deleteComment, getComments };
+    // Find the post by ID and populate the 'likes' field to get the user details
+    const post = await Post.findById(postId).populate('likes', 'name username email'); // Adjust fields as needed
+
+    if (!post) {
+        return res.status(404).json({ success: false, message: 'Post not found' });
+    }
+
+    // Return the list of users who liked the post
+    res.status(200).json({
+        success: true,
+        users: post.likes
+    });
+});
+
+//@desc     Get all the post done by a particular user
+//@route    GET /api/posts/users/:userId/posts
+//@access   private
+const getPostsByUser = asyncHandler(async (req, res) => {
+    const { userId } = req.params;
+
+    // Find all posts created by the user
+    const posts = await Post.find({ createdBy: userId }).sort({ createdAt: -1 }); // Sorting by most recent first
+
+    if (!posts || posts.length === 0) {
+        return res.status(404).json({ success: false, message: 'No posts found for this user' });
+    }
+
+    // Return the posts
+    res.status(200).json({
+        success: true,
+        posts
+    });
+});
+
+
+// @desc    Delete a post
+// @route   DELETE /api/posts/:postId
+// @access  Private
+const deletePost = asyncHandler(async (req, res) => {
+    const postId = req.params.postId;
+
+    try {
+        // Find the post by ID
+        const post = await Post.findById(postId);
+
+        // If the post doesn't exist
+        if (!post) {
+            return res.status(404).json({ success: false, message: 'Post not found' });
+        }
+
+        // Check if the user is the creator of the post
+        if (post.createdBy.toString() !== req.user.id.toString()) {
+            return res.status(403).json({ success: false, message: 'You do not have permission to delete this post' });
+        }
+
+        // Delete the post from the database
+        await post.deleteOne();
+
+        // If the post has an image, delete it from the local storage
+        if (post.image) {
+            const imagePath = path.join(__dirname, '..', post.image);
+
+            // Delete the image file using fs
+            fs.unlink(imagePath, (err) => {
+                if (err) {
+                    console.error('Error deleting image file:', err);
+                    return res.status(500).json({ success: false, message: 'Error deleting image file' });
+                }
+            });
+        }
+
+        return res.status(200).json({ success: true, message: 'Post and associated image deleted successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, message: 'Server error' });
+    }
+});
+
+module.exports = { createPost, likePost, addComment, deleteComment, getComments, getUsersWhoLikedPost, getPostsByUser, deletePost };
