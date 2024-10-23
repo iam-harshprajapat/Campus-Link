@@ -3,6 +3,7 @@ const Post = require('../models/Post');
 const { uploadPostImage } = require('../config/uploadConfig');
 const fs = require('fs');
 const path = require('path');
+const cloudinary = require('../config/cloudinaryconfig');
 
 // @desc    Create a new post (text or photo)
 // @route   POST /api/posts
@@ -11,31 +12,54 @@ const createPost = asyncHandler((req, res) => {
     uploadPostImage(req, res, async (err) => {
         if (err) {
             return res.status(400).json({ success: false, message: err });
-        } else {
-            const { content, caption } = req.body;
+        }
 
-            if (!content && !req.file) {
-                return res.status(400).json({ success: false, message: 'Post content or image is required!' });
-            }
+        const { content, caption } = req.body;
 
-            try {
-                // Create a new post object
-                const newPost = new Post({
-                    content, // Optional text content
-                    image: req.file ? req.file.path : null, // Optional image path
-                    caption: req.file ? caption : null, // Optional caption for image post
-                    createdBy: req.user.id, // User who created the post
+        // Check if there's either text content or an image
+        if (!content && !req.file) {
+            return res.status(400).json({ success: false, message: 'Post content or image is required!' });
+        }
+
+        try {
+            let imageUrl = null;
+            if (req.file && req.file.path) {
+                // Upload the image to Cloudinary
+                const cloudinaryResult = await cloudinary.uploader.upload(req.file.path, {
+                    folder: 'post_images',
+                    use_filename: true,
+                    unique_filename: false
                 });
 
-                // Save the post to the database
-                const post = await newPost.save();
+                // Store the Cloudinary URL
+                imageUrl = cloudinaryResult.secure_url;
 
-                // Send success response
-                return res.status(201).json({ success: true, post });
-            } catch (saveError) {
-                console.error(saveError);
-                return res.status(500).json({ success: false, message: 'Server error while saving the post.' });
+                // Delete the image from the local machine
+                fs.unlink(req.file.path, (err) => {
+                    if (err) {
+                        console.error("Error deleting local post image:", err);
+                    } else {
+                        console.log("Local post image deleted successfully");
+                    }
+                });
             }
+
+            // Create a new post object
+            const newPost = new Post({
+                content, // Optional text content
+                image: imageUrl, // Cloudinary image URL
+                caption: imageUrl ? caption : null, // Optional caption for image post
+                createdBy: req.user.id, // User who created the post
+            });
+
+            // Save the post to the database
+            const post = await newPost.save();
+
+            // Return the created post
+            return res.status(201).json({ success: true, post });
+        } catch (error) {
+            console.error(error);
+            return res.status(500).json({ success: false, message: 'Server error while saving the post.' });
         }
     });
 });
@@ -230,26 +254,24 @@ const deletePost = asyncHandler(async (req, res) => {
             return res.status(403).json({ success: false, message: 'You do not have permission to delete this post' });
         }
 
-        // Delete the post from the database
-        await post.deleteOne();
-
-        // If the post has an image, delete it from the local storage
+        // If the post has an image on Cloudinary, delete it from Cloudinary
         if (post.image) {
-            const imagePath = path.join(__dirname, '..', post.image);
-
-            // Delete the image file using fs
-            fs.unlink(imagePath, (err) => {
+            const publicId = post.image.split('/').pop().split('.')[0]; // Extract the public ID from the Cloudinary URL
+            await cloudinary.uploader.destroy(`post_images/${publicId}`, (err, result) => {
                 if (err) {
-                    console.error('Error deleting image file:', err);
-                    return res.status(500).json({ success: false, message: 'Error deleting image file' });
+                    console.error('Error deleting image from Cloudinary:', err);
+                    return res.status(500).json({ success: false, message: 'Error deleting image from Cloudinary' });
                 }
             });
         }
 
+        // Delete the post from the database
+        await post.deleteOne();
+
         return res.status(200).json({ success: true, message: 'Post and associated image deleted successfully' });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ success: false, message: 'Server error' });
+        return res.status(500).json({ success: false, message: 'Server error' });
     }
 });
 

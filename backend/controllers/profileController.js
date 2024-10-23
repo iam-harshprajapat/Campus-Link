@@ -3,6 +3,7 @@ const User = require('../models/User');
 const { uploadProfilePicture } = require('../config/uploadConfig');
 const fs = require('fs');
 const path = require('path');
+const cloudinary = require('../config/cloudinaryconfig');
 
 // @desc    Get user profile by userId
 // @route   GET /api/profile/:userId
@@ -62,22 +63,27 @@ const updateUserProfile = asyncHandler((req, res) => {
             // Handle profile picture upload if provided
             if (req.file && req.file.path) {
                 // Check if the user already has an existing profile picture
+                const cloudinaryResult = await cloudinary.uploader.upload(req.file.path, {
+                    folder: 'user_profile_photos',
+                    use_filename: true,
+                    unique_filename: false
+                });
+
                 if (user.profilePicture) {
-                    // Construct the full path of the existing profile picture
-                    const existingProfilePicturePath = path.join(__dirname, '..', user.profilePicture);
-
-                    // Delete the existing profile picture file if it exists
-                    fs.unlink(existingProfilePicturePath, (err) => {
-                        if (err) {
-                            console.error("Error deleting old profile picture:", err);
-                        } else {
-                            console.log("Old profile picture deleted successfully");
-                        }
-                    });
+                    const publicId = user.profilePicture.split('/').pop().split('.')[0]; // Extract public ID from URL
+                    await cloudinary.uploader.destroy(publicId);
                 }
+                // Set the new Cloudinary URL as the user's profile picture
+                user.profilePicture = cloudinaryResult.secure_url;
 
-                // Assign the new profile picture path
-                user.profilePicture = req.file.path;
+
+                fs.unlink(req.file.path, (err) => {
+                    if (err) {
+                        console.error("Error deleting local profile picture:", err);
+                    } else {
+                        console.log("Local profile picture deleted successfully");
+                    }
+                });
             }
 
             // Update the editable fields

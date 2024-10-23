@@ -8,6 +8,7 @@ const initialState = {
     token: null,
     error: null,
     user: null,
+    data: {},
 };
 
 const authSlice = createSlice({
@@ -33,7 +34,7 @@ const authSlice = createSlice({
         builder.addCase(getCurrentUser.fulfilled, (state, { payload }) => {
             state.success = true;
             state.error = false;
-            state.data = payload.data;
+            state.data = payload;
         })
 
     },
