@@ -1,0 +1,100 @@
+.text-post-container {
+    background-color: #fff;
+    border-radius: 0.8rem;
+    width: 668px;
+    border: 1px solid lightgray;
+    box-shadow: 0 0 2px lightgray;
+    padding: 10px 10px 0 10px;
+}
+
+.text-post-container .post-header {
+    border-bottom: 1px solid lightgray;
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    padding-bottom: 5px;
+}
+
+.text-post-container .post-header .profile-image {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+}
+
+.name-date {
+    display: flex;
+    flex-direction: column;
+    user-select: none;
+}
+
+.name-date h2 {
+    margin: 0;
+    font-size: 17px;
+}
+
+.name-date p {
+    margin: 0;
+    font-family: opensans-semibold;
+    font-size: 10px;
+    color: rgb(99, 99, 99)
+}
+
+.post-content {
+    padding: 5px;
+    height: auto;
+    border-bottom: 1px solid lightgray;
+}
+
+.post-content p {
+    font-family: opensans-regular;
+    font-size: 15px;
+    margin: 0;
+}
+
+.hash {
+    color: #2B3467;
+    font-size: 15px;
+    font-family: opensans-bold;
+    cursor: pointer;
+
+    &:hover {
+        text-decoration: underline;
+        transition: 0.5s;
+    }
+}
+
+.likedBy {
+    padding: 5px;
+    font-family: opensans-semibold;
+    font-size: 12px;
+    margin: 0;
+    cursor: pointer;
+}
+
+
+.interaction {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    align-items: center;
+    height: 35px;
+}
+
+.like,
+.comment {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50%;
+    cursor: pointer;
+
+    &:hover {
+        background-color: lightgray;
+        transition: 0.4s;
+    }
+}
+
+.interaction .icon {
+    font-size: 25px;
+}

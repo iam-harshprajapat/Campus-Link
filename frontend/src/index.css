@@ -1,0 +1,60 @@
+/* src/Styles/fonts.css */
+
+@font-face {
+    font-family: 'Roboto-Light';
+    src: url('./assets/fonts/Roboto-Light.ttf');
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Roboto-Regular';
+    src: url('./assets/fonts/Roboto-Regular.ttf');
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Roboto-Medium';
+    src: url('./assets/fonts/Roboto-Medium.ttf');
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Roboto-Bold';
+    src: url('./assets/fonts/Roboto-Bold.ttf');
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Roboto-Black';
+    src: url('./assets/fonts/Roboto-Black.ttf');
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'opensans-regular';
+    src: url('./assets/fonts/OpenSans-Regular.ttf');
+}
+
+@font-face {
+    font-family: 'opensans-semibold';
+    src: url('./assets/fonts/OpenSans-Semibold.ttf');
+}
+
+@font-face {
+    font-family: 'opensans-bold';
+    src: url('./assets/fonts/OpenSans-Bold.ttf');
+}
+
+@font-face {
+    font-family: 'opensans-extrabold';
+    src: url('./assets/fonts/OpenSans-ExtraBold.ttf');
+}
+
+@font-face {
+    font-family: 'opensans-light';
+    src: url('./assets/fonts/OpenSans-Light.ttf');
+}
+
+* {
+    font-family: opensans-semibold;
+}

@@ -1,0 +1,226 @@
+.image-post-container {
+    height: auto;
+    min-height: 100px;
+    width: 1007px;
+    display: grid;
+    grid-template-columns: 333px 333px 333px;
+    gap: 4px;
+}
+
+.image-post-container .image-post {
+    height: 333px;
+    width: 333px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    cursor: pointer;
+}
+
+.image-wrapper {
+    background-color: rgba(0, 0, 0, 0.65);
+    height: 100%;
+    width: 100%;
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-post-container .image-post:hover .image-wrapper {
+    display: flex;
+}
+
+.info-box {
+    display: flex;
+    width: 100px;
+    justify-content: center;
+    gap: 20px;
+}
+
+.inner-box {
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    gap: 5px;
+}
+
+.inner-box p {
+    margin: 0;
+    color: #fff;
+}
+
+.inner-box .icon {
+    font-size: 20px;
+    color: #fff;
+}
+
+
+/* ----------------------------------------------------------------
+-------------------------Post Modal-----------------------------
+---------------------------------------------------------------- */
+.post-modal {
+    max-width: 1200px;
+    width: 100%;
+    /* Allows some flexibility for smaller screens */
+    display: flex;
+    background-color: #f4f2ee;
+    margin: auto;
+    max-height: 90vh;
+    min-width: 800px;
+}
+
+.post-image-container {
+    width: 60%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    max-height: 90vh;
+}
+
+.post-image {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    /* Ensures image scales to fit within container */
+    max-height: 90vh;
+    /* Limits the height for vertical images */
+    max-width: 100%;
+    /* Limits the width for horizontal images */
+}
+
+.post-comments {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    padding: 10px;
+}
+
+.post-comments .post-header {
+    display: flex;
+    gap: 20px;
+    align-items: center;
+    padding-bottom: 5px;
+}
+
+.user-profile {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background-position: center;
+    background-size: contain;
+}
+
+.post-comments .post-header .user-info {
+    display: flex;
+    flex-direction: column;
+    user-select: none;
+}
+
+.post-comments .post-header .user-info h2 {
+    margin: 0;
+    font-size: 17px;
+}
+
+.post-comments .post-header .user-info p {
+    margin: 0;
+    font-family: opensans-semibold;
+    font-size: 11px;
+    color: rgb(99, 99, 99)
+}
+
+.post-caption {
+    height: auto;
+    margin-top: 5px;
+    border-bottom: 1px solid lightgray;
+    padding-bottom: 5px;
+}
+
+.post-caption p {
+    font-family: opensans-regular;
+    font-size: 13px;
+    margin: 0;
+}
+
+.comment-container {
+    background-color: #fff;
+    display: flex;
+    flex-direction: column;
+    padding: 5px;
+    border-radius: 0.8rem;
+    box-shadow: 0 0 2px #9c9999;
+}
+
+.comment-header {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.comment-header .comment-user-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-position: center;
+    background-size: contain;
+    background-position: center;
+}
+
+.comment-header .comment-details {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.comment-user-name {
+    font-size: 15px;
+    font-family: opensans-semibold;
+}
+
+.comment-container .comment-text {
+    font-family: opensans-regular;
+    font-size: 13px;
+    margin: 0;
+    margin-left: 50px;
+}
+
+.do-comment {
+    margin-top: auto;
+    width: 100%;
+    background-color: #a3a9c1;
+    border-radius: 40px;
+    border: 1px solid #2B3467;
+    height: 50px;
+    display: flex;
+    align-items: center;
+}
+
+.do-comment textarea {
+    padding-top: 14px;
+    resize: none;
+    overflow-y: auto;
+    overflow-x: hidden;
+    width: 85%;
+    height: 100%;
+    background-color: transparent;
+    outline: none;
+    border: none;
+    padding-left: 15px;
+    font-family: opensans-regular;
+    font-size: 13px;
+    white-space: wrap;
+    color: #000;
+}
+
+.do-comment .icon {
+    font-size: 25px;
+    cursor: pointer;
+    color: #2B3467;
+    flex: 1;
+}
+
+.do-comment textarea::placeholder {
+    font-family: cursive;
+    font-style: italic;
+    color: #504f4f;
+}

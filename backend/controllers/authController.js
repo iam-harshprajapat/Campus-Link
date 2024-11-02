@@ -452,6 +452,22 @@ const resetPassword = asyncHandler(async (req, res) => {
     }
 })
 
+// --------------------------------------------------get batch of users-------------------------------------------
+// @desc    get the batch of users
+// @route   POST /api/auth/batch/users
+// @access  private
+const getUsersBatch = asyncHandler(async (req, res) => {
+    const { userIds } = req.body;
+    if (!userIds) {
+        return res.status(400).send({
+            success: false,
+            message: 'User IDs are required',
+        });
+    }
+    const users = await User.find({ _id: { $in: userIds } });
+    res.json(users);
+})
+
 module.exports = {
     registerUser,
     loginUser,
@@ -459,5 +475,6 @@ module.exports = {
     resendOtp,
     getCurrentUser,
     sendOtpToResetPassword,
-    resetPassword
+    resetPassword,
+    getUsersBatch,
 };
