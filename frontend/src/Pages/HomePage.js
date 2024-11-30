@@ -14,6 +14,7 @@ import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { getCurrentUser } from '../redux/features/login/authAction'
 import Loading from './../Components/Loading';
+import DefaultProfile from '../assets/images/default_profile.jpg'
 
 const HomePage = () => {
     const { data } = useSelector((state) => state.auth);
@@ -48,7 +49,7 @@ const HomePage = () => {
                             <img alt='message' src={message} />
                         </div>
                         <Link to={`/profile/${data.user._id}`} className='h-other-img' style={{ border: '2px solid #fff' }}>
-                            <div className='h-other-img-profile' style={{ backgroundImage: `url(${data.user.profilePicture})`, }}></div>
+                            <div className='h-other-img-profile' style={data.user.profilePicture ? { backgroundImage: `url(${data.user.profilePicture})` } : { backgroundImage: `url(${DefaultProfile})` }}></div>
                         </Link>
                     </div>
                 </div>

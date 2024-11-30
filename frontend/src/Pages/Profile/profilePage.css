@@ -159,3 +159,35 @@
     flex-direction: column;
     align-items: center;
 }
+
+.three-dot {
+    font-size: 25px;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #626574a1;
+    }
+}
+
+
+
+.logout {
+    position: absolute;
+    right: 35px;
+    top: 45px;
+    background-color: #fff;
+    font-size: 15px;
+    padding: 5px 10px;
+    box-shadow: 0 0 8px #000000b7;
+    transition: 0.3s;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #dfaa40;
+
+    }
+}

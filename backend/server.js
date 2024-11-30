@@ -14,6 +14,7 @@ const authMiddleware = require('./middlewares/authMiddleware');
 const adminMiddleware = require('./middlewares/adminMiddleware');
 const postRoutes = require('./routes/postRoutes');
 const profileRoute = require('./routes/profileRoute');
+const usageRoute = require('./routes/usageRoute');
 // Load environment variables
 dotenv.config();
 
@@ -39,14 +40,17 @@ app.use('/api/admin', adminMiddleware, adminRoute);
 app.use('/api/post', authMiddleware, postRoutes)
 app.use('api/post', authMiddleware, postRoutes);
 app.use('/api/profile', authMiddleware, profileRoute);
+app.use('/api/usage/', authMiddleware, usageRoute);
 // Default Route
 app.get('/', (req, res) => {
     res.send('API is running...');
 });
 
+
 // Set the server to listen on a port
 const PORT = process.env.PORT || 5000;
+
+
 app.listen(PORT, () => {
     console.log(`Node Server Running in ${process.env.DEV_MODE} Mode on port ${process.env.PORT}...`.bgGreen.black);
-
 });

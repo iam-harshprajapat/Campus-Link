@@ -184,8 +184,11 @@
     margin-left: 50px;
 }
 
-.do-comment {
+.like-comment {
     margin-top: auto;
+}
+
+.do-comment {
     width: 100%;
     background-color: #a3a9c1;
     border-radius: 40px;
@@ -210,7 +213,13 @@
     font-size: 13px;
     white-space: wrap;
     color: #000;
+    line-height: 1.2;
 }
+
+.do-comment textarea::-webkit-scrollbar {
+    display: none;
+}
+
 
 .do-comment .icon {
     font-size: 25px;
@@ -223,4 +232,43 @@
     font-family: cursive;
     font-style: italic;
     color: #504f4f;
+}
+
+.likes-display {
+    display: flex;
+    gap: 5px;
+    margin-bottom: 5px;
+    padding: 5px 0 0 20px;
+    border-top: 1px solid #d3d3d3;
+    cursor: pointer;
+    align-items: center;
+}
+
+.likes-display p {
+    margin: 0;
+    font-family: opensans-semibold;
+    font-size: 11px;
+
+}
+
+.likes-display .icon {
+    color: #2B3467;
+    font-size: 11px;
+}
+
+.like-comment .do-like-icon {
+    font-size: 14px;
+    height: 30px;
+    width: 100%;
+    padding: 5px 0;
+    border-radius: 40px;
+    border: 1px solid #2B3467;
+    background-color: #a3a9c1;
+    cursor: pointer;
+
+    &:hover {
+        background-color: #2B3467;
+        color: #fff !important;
+    }
+
 }

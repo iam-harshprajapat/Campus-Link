@@ -10,7 +10,8 @@ import ImagePost from './ImagePost';
 import TextPost from './TextPost';
 import EditModal from './EditModal';
 import Modal from '../../Components/Modal';
-
+import DefaultProfile from '../../assets/images/default_profile.jpg'
+import { BsThreeDotsVertical } from "react-icons/bs";
 const ProfilePage = () => {
     const { data } = useSelector((state) => state.auth);
     const { posts, error, loading: postLoading } = useSelector((state) => state.posts);
@@ -22,6 +23,7 @@ const ProfilePage = () => {
     const [postType, setPostType] = useState('image');
     const [showFullBio, setShowFullBio] = useState(false);
     const BIO_CHAR_LIMIT = 50;
+    const [dotClick, setDotClick] = useState(false);
 
     const handleCameraClick = () => {
         fileInputRef.current.click();
@@ -68,23 +70,28 @@ const ProfilePage = () => {
         return <Loading />;
     }
 
-    if (error) {
-        return <p>Error loading posts: {error}</p>;
-    }
+    // if (error) {
+    //     return <p>Error loading posts: {error}</p>;
+    // }
 
     const truncatedBio = data.user.bio.length > BIO_CHAR_LIMIT
         ? data.user.bio.slice(0, BIO_CHAR_LIMIT) + '...'
         : data.user.bio;
 
+    const handleLogout = (e) => {
+        e.stopPropagation(); // Prevent click from closing the dropdown
+        localStorage.removeItem('token');
+        window.location.reload();
+    }
     return (
         <>
-            <div className='container-fluid profile-container'>
+            <div className='container-fluid profile-container' onClick={() => setDotClick(false)}>
                 <div className='header'>
                     <div className='section-1'>
                         <div className='profile-image-box'>
                             <div
                                 className='profile-image'
-                                style={{ backgroundImage: `url(${data.user.profilePicture})` }}
+                                style={data.user.profilePicture ? { backgroundImage: `url(${data.user.profilePicture})` } : { backgroundImage: `url(${DefaultProfile})` }}
                             ></div>
                             <div className='camera-icon' onClick={handleCameraClick}>
                                 {profileLoading ? (
@@ -108,6 +115,21 @@ const ProfilePage = () => {
                         <h5 className='connections'>{data.user.connections.length} Links</h5>
                     </div>
                     <div className='section-2'>
+                        <BsThreeDotsVertical
+                            className='three-dot'
+                            onClick={(e) => {
+                                e.stopPropagation(); // Prevent the click event from propagating
+                                setDotClick((prev) => !prev); // Toggle the state
+                            }}
+                        />
+                        {dotClick && (
+                            <div
+                                className="logout"
+                                onClick={handleLogout}
+                            >
+                                Logout
+                            </div>
+                        )}
                         <div className='profile-details'>
                             <h4>{data.user.name}</h4>
                             <h5 style={{ marginTop: '20px' }} className='detail'>{data.user.email}</h5>

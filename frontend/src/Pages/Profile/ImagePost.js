@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import './ImagePost.css';
-import { BiMessageRounded, BiLike } from 'react-icons/bi';
+import { BiMessageRounded, BiLike, BiSolidLike } from 'react-icons/bi';
 import { IoIosSend } from "react-icons/io";
 import Modal from '../../Components/Modal';
 import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
-import { getBatchUsers, clearCommentUsers } from '../../redux/features/posts/postAction';
+import { getBatchUsers, clearCommentUsers, postComment } from '../../redux/features/posts/postAction';
+import { addLocalComment, removeLocalComment } from '../../redux/features/posts/postSlice';
 
 const ImagePost = ({ posts, user }) => {
     const [activePost, setActivePost] = useState(null);
+    const [commentText, setCommentText] = useState('');
     const dispatch = useDispatch();
     const { commentUsers } = useSelector((state) => state.posts);
 
@@ -24,6 +26,29 @@ const ImagePost = ({ posts, user }) => {
     };
 
     const findUserDetails = (userId) => commentUsers.find(user => user._id === userId);
+
+    const handleCommentSubmit = (postId) => {
+        // Generate a temporary comment ID for optimistic updates
+        const tempComment = {
+            _id: Date.now().toString(), // Temp ID
+            text: commentText,
+            postedBy: user._id,
+            createdAt: new Date().toISOString(),
+            temp: true, // Mark as temporary
+        };
+
+        // Optimistically add the comment
+        dispatch(addLocalComment({ postId, comment: tempComment }));
+        setCommentText(''); // Clear input
+
+        // Dispatch the actual comment action
+        const text = commentText;
+        dispatch(postComment({ text, postId })).unwrap()
+            .catch(() => {
+                // If failed, remove the optimistic comment
+                dispatch(removeLocalComment({ postId, tempCommentId: tempComment._id }));
+            });
+    };
 
     return (
         <>
@@ -102,9 +127,23 @@ const ImagePost = ({ posts, user }) => {
                                     })
                                 }
                             </div>
-                            <div className="do-comment">
-                                <textarea type="text" placeholder='drop a comment...' ></textarea>
-                                <IoIosSend className='icon' />
+                            <div className="like-comment">
+                                {activePost.likes.includes(user._id) ? (
+                                    <BiSolidLike className="do-like-icon" style={{ color: '#2B3467' }} />
+                                ) : (
+                                    <BiLike className="do-like-icon" />
+                                )}
+                                {
+                                    activePost.likes.length > 0 &&
+                                    <div className="likes-display">
+                                        <BiLike className='icon' />
+                                        <p>Liked by {activePost.likes.length} people</p>
+                                    </div>
+                                }
+                                <div className="do-comment">
+                                    <textarea type="text" placeholder='drop a comment...' spellCheck='false' onChange={(e) => setCommentText(e.target.value)}></textarea>
+                                    <IoIosSend className='icon' onClick={() => handleCommentSubmit(activePost._id)} />
+                                </div>
                             </div>
                         </div>
                     </div>

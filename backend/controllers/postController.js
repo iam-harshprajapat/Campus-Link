@@ -106,7 +106,7 @@ const likePost = asyncHandler(async (req, res) => {
 
 
 // @desc    Add a comment to a post
-// @route   POST /api/posts/:postId/comments
+// @route   POST /api/post/:postId/comments
 // @access  Private
 const addComment = asyncHandler(async (req, res) => {
     const { text } = req.body;

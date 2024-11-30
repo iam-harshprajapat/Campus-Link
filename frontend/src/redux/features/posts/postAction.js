@@ -35,7 +35,25 @@ export const getBatchUsers = createAsyncThunk(
         }
     }
 );
-
+export const postComment = createAsyncThunk(
+    'posts/comment',
+    async ({ text, postId }, { rejectWithValue }) => {
+        try {
+            const payload = { text };
+            const response = await API.post(`/post/${postId}/comments`, payload);
+            return {
+                ...response.data.comment,
+                postId, // Include postId to identify where to add this comment in the local state
+            };
+        } catch (error) {
+            const message =
+                error.response && error.response.data.message
+                    ? error.response.data.message
+                    : 'Unable to post comment';
+            return rejectWithValue(message);
+        }
+    }
+);
 
 // Action to clear comment users
 export const clearCommentUsers = createAction('posts/clearCommentUsers');
