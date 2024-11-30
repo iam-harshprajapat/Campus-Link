@@ -1,8 +1,8 @@
 // App.js
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
-import 'react-toastify/dist/ReactToastify.css';
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "react-toastify/dist/ReactToastify.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 import PublicRoute from "./Components/Routes/PublicRoutes";
 import ProtectedRoute from "./Components/Routes/ProtectedRoutes";
 //Pages
@@ -14,11 +14,13 @@ import Registration from "./Pages/Auth/Registration";
 import OtpVerification from "./Pages/Auth/OtpVerification";
 import ForgotPassword from "./Pages/Auth/ForgotPassword";
 //  Pages/Notes
-import Courses from './Pages/Notes/Courses';
+import Courses from "./Pages/Notes/Courses";
 import Semesters from "./Pages/Notes/Semesters";
 import Subjects from "./Pages/Notes/Subjects";
 import NotesList from "./Pages/Notes/NotesList";
 import ProfilePage from "./Pages/Profile/ProfilePage";
+import AdminLogin from "./Pages/Admin/AdminLogin";
+import AdminPanel from "./Pages/Admin/AdminPanel";
 
 function App() {
   return (
@@ -61,7 +63,7 @@ function App() {
           />
           {/* Protected routes like Home */}
           <Route
-            path='/feed'
+            path="/feed"
             element={
               <ProtectedRoute>
                 <HomePage />
@@ -109,6 +111,9 @@ function App() {
               </ProtectedRoute>
             }
           />
+
+          <Route path="/admin/login" element={<AdminLogin />} />
+          <Route path="/admin/adminpanel" element={<AdminPanel />} />
           {/* Catch-all Route */}
           <Route path="*" element={<InvalidRoute />} />
         </Routes>
