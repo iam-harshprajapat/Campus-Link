@@ -11,7 +11,9 @@ import EditModal from './EditModal';
 import Modal from '../../Components/Modal';
 import DefaultProfile from '../../assets/images/default_profile.jpg'
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { IoMdAdd } from "react-icons/io";
+import { IoIosCamera, IoIosText, IoMdAdd } from "react-icons/io";
+import ImageUpload from './ImageUpload';
+import TextUpload from './TextUpload';
 const ProfilePage = () => {
     const { data } = useSelector((state) => state.auth);
     const { posts, error, loading: postLoading } = useSelector((state) => state.posts);
@@ -24,7 +26,7 @@ const ProfilePage = () => {
     const [showFullBio, setShowFullBio] = useState(false);
     const BIO_CHAR_LIMIT = 50;
     const [dotClick, setDotClick] = useState(false);
-
+    const [uploadOptions, setUploadOptions] = useState(false)
     const handleCameraClick = () => {
         fileInputRef.current.click();
     };
@@ -87,7 +89,10 @@ const ProfilePage = () => {
     }
     return (
         <>
-            <div className='container-fluid profile-container' onClick={() => setDotClick(false)}>
+            <div className='container-fluid profile-container' onClick={() => {
+                setDotClick(false)
+                setUploadOptions(false)
+            }}>
                 <div className='header'>
                     <div className='section-1'>
                         <div className='profile-image-box'>
@@ -162,7 +167,30 @@ const ProfilePage = () => {
                 <div className="post-container">
                     {postType === 'image' ? <ImagePost posts={posts} user={data.user} /> : <TextPost posts={posts} user={data.user} />}
                 </div>
-                <div className="upload-post"><IoMdAdd /></div>
+                <div className="upload-post" onClick={(e) => {
+                    e.stopPropagation(); // Prevent the click event from propagating
+                    setUploadOptions((prev) => !prev); // Toggle the state
+                }}><IoMdAdd /></div>
+                {
+                    uploadOptions && (
+                        <div className='upload-options'>
+                            <div onClick={() => openModal(2)}><IoIosCamera /> upload image</div>
+                            <div onClick={() => openModal(3)}> <IoIosText />write a thought...</div>
+                        </div>
+                    )
+                }
+                {
+                    activeModal === 2 &&
+                    <Modal closeModal={closeModal}>
+                        <ImageUpload closeModal={closeModal} user={data.user} />
+                    </Modal>
+                }
+                {
+                    activeModal === 3 &&
+                    <Modal closeModal={closeModal}>
+                        <TextUpload closeModal={closeModal} user={data.user} />
+                    </Modal>
+                }
             </div >
         </>
     );

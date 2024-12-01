@@ -212,3 +212,32 @@
         transform: scale(0.98);
     }
 }
+
+.upload-options {
+    position: fixed;
+    bottom: 80px;
+    right: 70px;
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    justify-content: center;
+    padding: 10px;
+}
+
+.upload-options div {
+    padding: 5px;
+    border-radius: 12px;
+    border-bottom-right-radius: 0;
+    cursor: pointer;
+    border: 1px solid gray;
+    background-color: #2B3467;
+    transition: 0.4s;
+    color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+
+    &:hover {
+        background-color: #ddd;
+        color: #000;
+    }
+}

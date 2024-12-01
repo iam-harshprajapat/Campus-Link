@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import './ImagePost.css';
-import { BiMessageRounded, BiLike, BiSolidLike } from 'react-icons/bi';
+import { BiMessageRounded, BiLike, BiSolidLike, BiTrash } from 'react-icons/bi';
 import { IoIosSend } from "react-icons/io";
 import Modal from '../../Components/Modal';
 import moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
 import { getBatchUsers, clearCommentUsers, postComment } from '../../redux/features/posts/postAction';
 import { addLocalComment, removeLocalComment } from '../../redux/features/posts/postSlice';
+import API from './../../Services/API';
 
 const ImagePost = ({ posts, user }) => {
 
@@ -51,6 +52,11 @@ const ImagePost = ({ posts, user }) => {
             });
     };
 
+    const deletePost = async (postId) => {
+        await API.delete(`/post/${postId}`);
+        window.location.reload()
+    }
+
     if (!posts) {
         return <div>No posts to display.</div>;
     }
@@ -85,6 +91,7 @@ const ImagePost = ({ posts, user }) => {
             {activePost && (
                 <Modal closeModal={closeModal}>
                     <div className="post-modal">
+                        <BiTrash className='delete-post' onClick={() => deletePost(activePost._id)} />
                         <div className="post-image-container">
                             <img src={activePost.image} alt="Post" className="post-image" />
                         </div>
