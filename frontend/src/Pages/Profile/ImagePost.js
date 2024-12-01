@@ -9,6 +9,7 @@ import { getBatchUsers, clearCommentUsers, postComment } from '../../redux/featu
 import { addLocalComment, removeLocalComment } from '../../redux/features/posts/postSlice';
 
 const ImagePost = ({ posts, user }) => {
+
     const [activePost, setActivePost] = useState(null);
     const [commentText, setCommentText] = useState('');
     const dispatch = useDispatch();
@@ -50,6 +51,9 @@ const ImagePost = ({ posts, user }) => {
             });
     };
 
+    if (!posts) {
+        return <div>No posts to display.</div>;
+    }
     return (
         <>
             <div className="image-post-container">

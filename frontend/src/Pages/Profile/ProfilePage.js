@@ -1,6 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getCurrentUser } from '../../redux/features/login/authAction';
 import './profilePage.css';
 import { IoCameraOutline } from "react-icons/io5";
 import Loading from '../../Components/Loading';
@@ -12,6 +11,7 @@ import EditModal from './EditModal';
 import Modal from '../../Components/Modal';
 import DefaultProfile from '../../assets/images/default_profile.jpg'
 import { BsThreeDotsVertical } from "react-icons/bs";
+import { IoMdAdd } from "react-icons/io";
 const ProfilePage = () => {
     const { data } = useSelector((state) => state.auth);
     const { posts, error, loading: postLoading } = useSelector((state) => state.posts);
@@ -42,9 +42,11 @@ const ProfilePage = () => {
     const openModal = (modalNumber) => setActiveModal(modalNumber);
     const closeModal = () => setActiveModal(null);
 
-    useEffect(() => {
-        dispatch(getCurrentUser());
-    }, [dispatch]);
+    // useEffect(() => {
+    //     const { userid } = useParams();
+    //     const response = API.post('/auth/current-user-post', userid);
+    //     console.log(response);
+    // }, []);
 
     useEffect(() => {
         if (data?.user) {
@@ -131,7 +133,7 @@ const ProfilePage = () => {
                             </div>
                         )}
                         <div className='profile-details'>
-                            <h4>{data.user.name}</h4>
+                            <h4 style={{ fontSize: '30px', fontWeight: '600' }}>{data.user.name}</h4>
                             <h5 style={{ marginTop: '20px' }} className='detail'>{data.user.email}</h5>
                             <h5 className='detail'>{data.user.enrollmentNumber}</h5>
                             <h5 className='detail'>{data.user.branch}</h5>
@@ -160,6 +162,7 @@ const ProfilePage = () => {
                 <div className="post-container">
                     {postType === 'image' ? <ImagePost posts={posts} user={data.user} /> : <TextPost posts={posts} user={data.user} />}
                 </div>
+                <div className="upload-post"><IoMdAdd /></div>
             </div >
         </>
     );

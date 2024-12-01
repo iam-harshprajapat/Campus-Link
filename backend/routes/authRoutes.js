@@ -1,5 +1,5 @@
 const express = require('express');
-const { registerUser, loginUser, verifyOtp, resendOtp, getCurrentUser, sendOtpToResetPassword, resetPassword, getUsersBatch } = require('../controllers/authController');
+const { registerUser, loginUser, verifyOtp, resendOtp, getCurrentUser, sendOtpToResetPassword, resetPassword, getUsersBatch, PgetCurrentUser } = require('../controllers/authController');
 const authMiddleware = require('../middlewares/authMiddleware');
 const router = express.Router();
 
@@ -17,6 +17,8 @@ router.post('/reset-password-otp', sendOtpToResetPassword);
 router.post('/reset-password', resetPassword);
 //getcurrent user
 router.get('/current-user', authMiddleware, getCurrentUser);
+//getcurrent user
+router.post('/current-user-post', authMiddleware, PgetCurrentUser);
 //get batch of the users
 router.post('/batch/users', authMiddleware, getUsersBatch);
 module.exports = router;

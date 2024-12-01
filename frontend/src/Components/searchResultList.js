@@ -2,10 +2,13 @@ import React from "react";
 import "./searchResultList.css";
 import defaultProfile from "../assets/images/default_profile.jpg";
 import { useNavigate } from "react-router-dom";
-const SearchResultList = ({ result }) => {
+const SearchResultList = ({ result, user }) => {
   const navigate = useNavigate();
   const handleOpenUserProfile = (user_id) => {
-    navigate(`/profile/${user_id}`);
+    if (user === user_id) {
+      navigate(`/profile/${user}`)
+    }
+    else navigate(`/${user_id}`);
   };
   return (
     <>
@@ -22,11 +25,11 @@ const SearchResultList = ({ result }) => {
                 style={
                   user.profilePicture
                     ? {
-                        backgroundImage: `url(${user.profilePicture})`,
-                      }
+                      backgroundImage: `url(${user.profilePicture})`,
+                    }
                     : {
-                        backgroundImage: `url(${defaultProfile})`,
-                      }
+                      backgroundImage: `url(${defaultProfile})`,
+                    }
                 }
               ></div>
               <div>

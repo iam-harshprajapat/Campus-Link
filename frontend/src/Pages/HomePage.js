@@ -41,7 +41,7 @@ const HomePage = () => {
           </div>
           <div className="h-search-bar">
             <SearchBar setResult={setResult} />
-            <SearchResultList result={result} />
+            <SearchResultList result={result} user={data.user._id} />
           </div>
           <div className="h-other-icons">
             <div className="h-other-img">

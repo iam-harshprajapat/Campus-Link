@@ -367,7 +367,33 @@ const getCurrentUser = asyncHandler(async (req, res) => {
     user,
   });
 });
+// --------------------------------------------------GET CURRENT USER----------------------------------------------------------------
+const PgetCurrentUser = asyncHandler(async (req, res) => {
+  const { userId } = req.body; // Get user ID from req.user
 
+  if (!userId) {
+    return res.status(400).send({
+      success: false,
+      message: "User ID is missing!",
+    });
+  }
+
+  // Fetch user from the database
+  const user = await User.findById(userId);
+  if (!user) {
+    return res.status(404).send({
+      success: false,
+      message: "User not found!",
+    });
+  }
+
+  // Send back user details
+  return res.status(200).send({
+    success: true,
+    message: "User fetched successfully!",
+    user,
+  });
+});
 // --------------------------------------------------Sent OTP to Reset Password----------------------------------------------------------------
 
 // @desc    Sent OTP to Change password
@@ -494,4 +520,5 @@ module.exports = {
   sendOtpToResetPassword,
   resetPassword,
   getUsersBatch,
+  PgetCurrentUser,
 };

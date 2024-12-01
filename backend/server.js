@@ -38,7 +38,6 @@ app.use('/api/notes', authMiddleware, notesRoutes);
 app.use('/api/connections', authMiddleware, connectionRequestRoutes);
 app.use('/api/admin', adminMiddleware, adminRoute);
 app.use('/api/post', authMiddleware, postRoutes)
-app.use('api/post', authMiddleware, postRoutes);
 app.use('/api/profile', authMiddleware, profileRoute);
 app.use('/api/usage/', authMiddleware, usageRoute);
 // Default Route

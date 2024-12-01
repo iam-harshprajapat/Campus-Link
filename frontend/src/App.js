@@ -21,6 +21,8 @@ import NotesList from "./Pages/Notes/NotesList";
 import ProfilePage from "./Pages/Profile/ProfilePage";
 import AdminLogin from "./Pages/Admin/AdminLogin";
 import AdminPanel from "./Pages/Admin/AdminPanel";
+import UserProfile from './Pages/OtherProfile/UserProfile.js';
+
 
 function App() {
   return (
@@ -111,7 +113,14 @@ function App() {
               </ProtectedRoute>
             }
           />
-
+          <Route
+            path="/:userId"
+            element={
+              <ProtectedRoute>
+                <UserProfile />
+              </ProtectedRoute>
+            }
+          />
           <Route path="/admin/login" element={<AdminLogin />} />
           <Route path="/admin/adminpanel" element={<AdminPanel />} />
           {/* Catch-all Route */}

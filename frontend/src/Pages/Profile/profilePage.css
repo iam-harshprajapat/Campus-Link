@@ -1,5 +1,5 @@
 .profile-container {
-    background-color: #f4f2ee;
+    background-color: #F9FAFB;
     height: auto;
     min-height: 100vh;
     margin: 0;
@@ -10,6 +10,7 @@
     height: auto;
     min-height: 300px;
     border-bottom: 1px solid #9c9999;
+    background-color: #2B3467;
 }
 
 .header {
@@ -34,7 +35,7 @@
     border-radius: 50%;
     margin-top: 30px;
     margin-left: 30px;
-    border: 2px solid #2B3467;
+    border: 3px solid #fff;
     padding: 2px;
     position: relative;
 }
@@ -72,13 +73,13 @@
     font-size: 13px;
     height: auto;
     width: 200px;
-    color: grey;
+    color: #ddd;
     text-wrap: wrap;
     font-family: opensans-regular;
 }
 
 .connections {
-    color: #16C79A;
+    color: #00f5b8;
     font-size: 15px;
     margin-left: 30px;
     cursor: pointer;
@@ -98,7 +99,7 @@
     width: 300px;
     margin-top: 30px;
     margin-left: 20px;
-    color: #2B3467;
+    color: #fff;
     display: flex;
     flex-direction: column;
 }
@@ -111,16 +112,16 @@
 .edit-btn {
     margin-top: 20px;
     width: 80%;
-    background-color: #2B3467;
+    background-color: #fff;
 
-    color: #fff;
+    color: #000;
     border: none;
     outline: none;
     height: 40px;
     border-radius: 40px;
 
     &:hover {
-        background-color: #4a5386;
+        background-color: #adb1e9;
     }
 }
 
@@ -167,13 +168,12 @@
     right: 20px;
     border-radius: 50%;
     cursor: pointer;
+    color: #fff;
 
     &:hover {
         background-color: #626574a1;
     }
 }
-
-
 
 .logout {
     position: absolute;
@@ -189,5 +189,26 @@
     &:hover {
         background-color: #dfaa40;
 
+    }
+}
+
+.upload-post {
+    height: 50px;
+    width: 50px;
+    background-color: #2B3467;
+    color: #fff;
+    font-size: 30px;
+    font-weight: 800;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    bottom: 40px;
+    right: 40px;
+    border-radius: 50%;
+    cursor: pointer;
+
+    &:active {
+        transform: scale(0.98);
     }
 }

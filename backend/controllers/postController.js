@@ -214,7 +214,7 @@ const getUsersWhoLikedPost = asyncHandler(async (req, res) => {
 });
 
 //@desc     Get all the post done by a particular user
-//@route    GET /api/posts/users/:userId/posts
+//@route    GET /api/post/users/:userId/posts
 //@access   private
 const getPostsByUser = asyncHandler(async (req, res) => {
     const { userId } = req.params;
@@ -223,7 +223,7 @@ const getPostsByUser = asyncHandler(async (req, res) => {
     const posts = await Post.find({ createdBy: userId }).sort({ createdAt: -1 }); // Sorting by most recent first
 
     if (!posts || posts.length === 0) {
-        return res.status(404).json({ success: false, message: 'No posts found for this user' });
+        return res.status(200).json({ success: false, message: 'No posts found for this user' });
     }
 
     // Return the posts

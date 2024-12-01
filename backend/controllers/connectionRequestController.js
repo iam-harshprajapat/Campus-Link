@@ -7,14 +7,14 @@ const ConnectionRequest = require('../models/ConnectionRequest');
 // @access  Private
 const sendConnectionRequest = asyncHandler(async (req, res) => {
     const { receiverId } = req.body;
-    const senderId = req.user._id;
+    const senderId = req.user.id;
 
     if (!receiverId) {
-        return res.status(400).json({ success: false, message: 'Receiver ID is required' });
+        return res.status(400).send({ success: false, message: 'Receiver ID is required' });
     }
 
-    if (senderId.equals(receiverId)) {
-        return res.status(400).json({ success: false, message: 'You cannot send a request to yourself' });
+    if (senderId === receiverId) {
+        return res.status(200).json({ success: false, message: 'You cannot send a request to yourself' });
     }
 
     // Check if the receiver exists
@@ -26,7 +26,7 @@ const sendConnectionRequest = asyncHandler(async (req, res) => {
     // Check if a request already exists
     const existingRequest = await ConnectionRequest.findOne({ sender: senderId, receiver: receiverId });
     if (existingRequest) {
-        return res.status(400).json({ success: false, message: 'Request already sent' });
+        return res.status(200).json({ success: false, message: 'Request already sent' });
     }
 
     // Create a new connection request
@@ -108,7 +108,7 @@ const rejectConnectionRequest = asyncHandler(async (req, res) => {
 // @route   GET /api/connections/requests
 // @access  Private
 const getConnectionRequests = asyncHandler(async (req, res) => {
-    const userId = req.user._id;
+    const userId = req.user.id;
 
     const requests = await ConnectionRequest.find({ receiver: userId, status: 'pending' }).populate('sender', 'name username');
     if (!requests || requests.length === 0) {
@@ -122,14 +122,14 @@ const getConnectionRequests = asyncHandler(async (req, res) => {
 // @route   GET /api/connections
 // @access  Private
 const getUserConnections = asyncHandler(async (req, res) => {
-    const userId = req.user._id;
+    const userId = req.user.id;
 
     const user = await User.findById(userId).populate('connections', 'name username');
     if (!user || !user.connections) {
-        return res.status(404).json({ success: false, message: 'No connections found' });
+        return res.status(404).send({ success: false, message: 'No connections found' });
     }
 
-    res.status(200).json({ success: true, connections: user.connections });
+    res.status(200).send({ success: true, connections: user.connections });
 });
 
 module.exports = {

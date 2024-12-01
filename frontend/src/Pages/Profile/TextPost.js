@@ -16,7 +16,9 @@ const TextPost = ({ posts, user }) => {
             )
         );
     };
-
+    if (!posts) {
+        return <h3>No post...</h3>
+    }
     return (
         <>
             {posts.map((post) => (
