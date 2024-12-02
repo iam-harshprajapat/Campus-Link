@@ -16,21 +16,52 @@ import { getCurrentUser } from "../redux/features/login/authAction";
 import Loading from "./../Components/Loading";
 import SearchBar from "../Components/SearchBar";
 import SearchResultList from "./../Components/searchResultList";
+import API from "../Services/API";
+import moment from 'moment';
+import { BiLike, BiMessageRounded } from "react-icons/bi";
 
 const HomePage = () => {
+  const [posts, setPosts] = useState([]);
+  const [userCache, setUserCache] = useState({});
   const { data } = useSelector((state) => state.auth);
   const [result, setResult] = useState([]);
   const dispatch = useDispatch();
+
   useEffect(() => {
     dispatch(getCurrentUser());
   }, [dispatch]);
 
+  const fetchPostData = async () => {
+    try {
+      const response = await API.get("/post/get-all-posts");
+      const postData = response.data.posts;
+      const updatedPosts = await Promise.all(
+        postData.map(async (post) => {
+          if (!userCache[post.createdBy]) {
+            const userResponse = await API.post("/auth/current-user-post", {
+              userId: post.createdBy,
+            });
+            const userData = userResponse.data.user;
+            setUserCache((prev) => ({ ...prev, [post.createdBy]: userData }));
+            return { ...post, user: userData };
+          }
+          return { ...post, user: userCache[post.createdBy] };
+        })
+      );
+      setPosts(updatedPosts);
+    } catch (error) {
+      console.log("error: " + error);
+    }
+  };
+
   useEffect(() => {
-    console.log(data.user);
-  }, [data]);
+    fetchPostData();
+  }, []);
+
   if (!data || !data.user) {
     return <Loading />;
   }
+
   return (
     <>
       <div className="container-fluid h-container">
@@ -62,33 +93,68 @@ const HomePage = () => {
             </Link>
           </div>
         </div>
-
-        <div className="h-sidebar">
-          <div className="h-menu">
-            <img alt="menu-img" src={home} />
-            <h3>Home</h3>
-          </div>
-          <Link to={`/profile/${data.user._id}`} className="h-menu">
-            <img alt="menu-img" src={user} />
-            <h3>Profile</h3>
-          </Link>
-          <Link to={"/notes/courses"}>
+        <div className="main-content">
+          <div className="h-sidebar">
             <div className="h-menu">
-              <img alt="menu-img" src={book} />
-              <h3>Notes</h3>
+              <img alt="menu-img" src={home} />
+              <h3>Home</h3>
             </div>
-          </Link>
-          <div className="h-menu">
-            <img alt="menu-img" src={link} />
-            <h3>Connect</h3>
+            <Link to={`/profile/${data.user._id}`} className="h-menu">
+              <img alt="menu-img" src={user} />
+              <h3>Profile</h3>
+            </Link>
+            <Link to={"/notes/courses"}>
+              <div className="h-menu">
+                <img alt="menu-img" src={book} />
+                <h3>Notes</h3>
+              </div>
+            </Link>
+            <Link to={"/user/connections"}>
+              <div className="h-menu">
+                <img alt="menu-img" src={link} />
+                <h3>Connect</h3>
+              </div>
+            </Link>
+            <div className="h-menu">
+              <img alt="menu-img" src={speaker} />
+              <h3>Events & Announcement</h3>
+            </div>
+            <div className="h-menu">
+              <img alt="menu-img" src={live} />
+              <h3>Live Feed</h3>
+            </div>
           </div>
-          <div className="h-menu">
-            <img alt="menu-img" src={speaker} />
-            <h3>Events & Announcement</h3>
-          </div>
-          <div className="h-menu">
-            <img alt="menu-img" src={live} />
-            <h3>Live Feed</h3>
+          <div className="user-post-feed">
+            {posts.length ? (
+              posts.map((post) => (
+                <div className="huser-post-box" key={post._id}>
+                  <div className="user-post-header">
+                    <div
+                      className="user-pro"
+                      style={{
+                        backgroundImage: `url(${post.user?.profilePicture || ""})`,
+                      }}
+                    ></div>
+                    <div className="user-hdetail">
+                      <p style={{ fontSize: '17px', fontWeight: 'bold' }}>{post.user.name}</p>
+                      <p style={{ fontSize: '12px', color: 'gray' }}>{moment(post.createdAt).fromNow()}</p>
+                    </div>
+                  </div>
+                  <p className="user-hcaption">{post.caption}</p>
+                  <div className="user-post-image" style={{ backgroundImage: `url(${post.image})` }}></div>
+                  <div className="likeFooter">
+                    <div className="h-icon">
+                      <BiLike style={{ fontSize: '20px' }} />
+                    </div>
+                    <div className="h-icon">
+                      <BiMessageRounded style={{ fontSize: '20px' }} />
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <p>Empty posts...</p>
+            )}
           </div>
         </div>
       </div>

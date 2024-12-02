@@ -4,7 +4,7 @@ const { uploadPostImage } = require('../config/uploadConfig');
 const fs = require('fs');
 const path = require('path');
 const cloudinary = require('../config/cloudinaryconfig');
-
+const User = require('../models/User')
 // @desc    Create a new post (text or photo)
 // @route   POST /api/posts
 // @access  Private
@@ -43,13 +43,16 @@ const createPost = asyncHandler((req, res) => {
                     }
                 });
             }
+            const user = await User.findById(req.user.id);
 
             // Create a new post object
             const newPost = new Post({
+
                 content, // Optional text content
                 image: imageUrl, // Cloudinary image URL
                 caption: imageUrl ? caption : null, // Optional caption for image post
                 createdBy: req.user.id, // User who created the post
+                user: user.name
             });
 
             // Save the post to the database
@@ -275,4 +278,22 @@ const deletePost = asyncHandler(async (req, res) => {
     }
 });
 
-module.exports = { createPost, likePost, addComment, deleteComment, getComments, getUsersWhoLikedPost, getPostsByUser, deletePost };
+//@desc     Get all posts in the database
+//@route    GET /api/posts
+//@access   private
+const getAllPosts = asyncHandler(async (req, res) => {
+    // Fetch all posts sorted by creation date in descending order
+    const posts = await Post.find().sort({ createdAt: -1 });
+
+    if (!posts || posts.length === 0) {
+        return res.status(200).send({ success: false, message: 'No posts available' });
+    }
+
+    // Return the posts
+    res.status(200).send({
+        success: true,
+        posts,
+    });
+});
+
+module.exports = { createPost, likePost, addComment, deleteComment, getComments, getUsersWhoLikedPost, getPostsByUser, deletePost, getAllPosts };

@@ -22,6 +22,7 @@ import ProfilePage from "./Pages/Profile/ProfilePage";
 import AdminLogin from "./Pages/Admin/AdminLogin";
 import AdminPanel from "./Pages/Admin/AdminPanel";
 import UserProfile from './Pages/OtherProfile/UserProfile.js';
+import Connection from "./Pages/Connect/Connection.js";
 
 
 function App() {
@@ -78,6 +79,14 @@ function App() {
             element={
               <ProtectedRoute>
                 <Courses />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/user/connections"
+            element={
+              <ProtectedRoute>
+                <Connection />
               </ProtectedRoute>
             }
           />

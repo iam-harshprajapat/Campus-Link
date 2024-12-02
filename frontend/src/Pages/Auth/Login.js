@@ -84,11 +84,13 @@ const Login = () => {
                             <div className='form-inner-box'>
                                 <form onSubmit={handleSubmit}>
                                     <input
+                                        className='login-input'
                                         type='text'
                                         placeholder='email or username or enrollment'
                                         onChange={(e) => setEmail(e.target.value)}
                                     />
                                     <input
+                                        className='login-input'
                                         type='password'
                                         placeholder='password'
                                         onChange={(e) => setPassword(e.target.value)}
