@@ -16,7 +16,7 @@ import ImageUpload from './ImageUpload';
 import TextUpload from './TextUpload';
 const ProfilePage = () => {
     const { data } = useSelector((state) => state.auth);
-    const { posts, error, loading: postLoading } = useSelector((state) => state.posts);
+    const { posts, loading: postLoading } = useSelector((state) => state.posts);
     const { loading: profileLoading } = useSelector((state) => state.profile);
     const [file, setFile] = useState(null);
     const [updateSuccess, setUpdateSuccess] = useState(false); // Track update success state
@@ -44,12 +44,6 @@ const ProfilePage = () => {
     const openModal = (modalNumber) => setActiveModal(modalNumber);
     const closeModal = () => setActiveModal(null);
 
-    // useEffect(() => {
-    //     const { userid } = useParams();
-    //     const response = API.post('/auth/current-user-post', userid);
-    //     console.log(response);
-    // }, []);
-
     useEffect(() => {
         if (data?.user) {
             dispatch(getPostsByUser(data.user._id));
@@ -74,9 +68,6 @@ const ProfilePage = () => {
         return <Loading />;
     }
 
-    // if (error) {
-    //     return <p>Error loading posts: {error}</p>;
-    // }
 
     const truncatedBio = data.user.bio.length > BIO_CHAR_LIMIT
         ? data.user.bio.slice(0, BIO_CHAR_LIMIT) + '...'

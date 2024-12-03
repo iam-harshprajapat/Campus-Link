@@ -14,6 +14,7 @@ const transporter = nodemailer.createTransport({
 // @desc    Getting list of all the users who are pending for approval by admin
 // @route   POST /api/admin/pending-for-approval
 // @access  Admin only
+
 const getUserPendigForApproval = asyncHandler(async (req, res) => {
     try {
         const unapprovedUser = await User.find({ isApproved: false });
@@ -24,9 +25,9 @@ const getUserPendigForApproval = asyncHandler(async (req, res) => {
                 unapprovedUser
             })
         }
-        return res.status(404).send({
+        res.status(404).send({
             success: false,
-            message: 'No UnApproved users found!',
+            message: 'No Unapproved users found!'
         })
     } catch (error) {
         return res.status(500).send({
@@ -35,7 +36,6 @@ const getUserPendigForApproval = asyncHandler(async (req, res) => {
             error
         })
     }
-
 })
 
 

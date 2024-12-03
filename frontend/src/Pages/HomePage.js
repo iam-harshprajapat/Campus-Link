@@ -151,48 +151,55 @@ const HomePage = () => {
           </div>
           <div className="user-post-feed">
             {posts.length ? (
-              posts.map((post) => {
-                const isLikedByUser = post.likes.includes(data.user._id); // Check if the current user has liked the post
-
-                return (
-                  <div className="huser-post-box" key={post._id}>
-                    <div className="user-post-header">
+              posts
+                .filter((post) => post.image) // Filter posts that have an image
+                .map((post) => {
+                  const isLikedByUser = post.likes.includes(data.user._id); // Check if the current user has liked the post
+                  return (
+                    <div className="huser-post-box" key={post._id}>
+                      <div className="user-post-header">
+                        <div
+                          className="user-pro"
+                          style={{
+                            backgroundImage: `url(${post.user?.profilePicture || ""})`,
+                          }}
+                        ></div>
+                        <div className="user-hdetail">
+                          <p style={{ fontSize: "17px", fontWeight: "bold" }}>{post.user.name}</p>
+                          <p style={{ fontSize: "12px", color: "gray" }}>{moment(post.createdAt).fromNow()}</p>
+                        </div>
+                      </div>
+                      <p className="user-hcaption">{post.caption}</p>
                       <div
-                        className="user-pro"
-                        style={{
-                          backgroundImage: `url(${post.user?.profilePicture || ""})`,
-                        }}
+                        className="user-post-image"
+                        style={{ backgroundImage: `url(${post.image})` }}
                       ></div>
-                      <div className="user-hdetail">
-                        <p style={{ fontSize: '17px', fontWeight: 'bold' }}>{post.user.name}</p>
-                        <p style={{ fontSize: '12px', color: 'gray' }}>{moment(post.createdAt).fromNow()}</p>
+                      <p className="like-count">{post.likes.length} Likes</p>
+                      <div className="likeFooter">
+                        <div
+                          className="h-icon"
+                          onClick={() => likePost(post._id)}
+                          style={
+                            isLikedByUser
+                              ? { backgroundColor: "#2B3467", color: "#fff" }
+                              : { backgroundColor: "#fff", color: "#000" }
+                          }
+                        >
+                          <BiLike style={{ fontSize: "20px" }} />
+                        </div>
+                        <div className="h-icon">
+                          <BiMessageRounded style={{ fontSize: "20px" }} />
+                        </div>
                       </div>
                     </div>
-                    <p className="user-hcaption">{post.caption}</p>
-                    <div className="user-post-image" style={{ backgroundImage: `url(${post.image})` }}></div>
-                    <p className="like-count">{post.likes.length} Likes</p>
-                    <div className="likeFooter">
-                      <div
-                        className="h-icon"
-                        onClick={() => likePost(post._id)}
-                        style={isLikedByUser ? { backgroundColor: '#2B3467', color: '#fff' } : { backgroundColor: '#fff', color: '#000' }}
-                      >
-                        <BiLike style={{ fontSize: '20px' }} />
-                      </div>
-                      <div className="h-icon">
-                        <BiMessageRounded style={{ fontSize: '20px' }} />
-                      </div>
-                    </div>
-                  </div>
-                );
-              })
+                  );
+                })
             ) : (
               <p>Empty posts...</p>
             )}
-          </div>;
-
+          </div>
         </div>
-      </div>
+      </div >
     </>
   );
 };
