@@ -45,7 +45,7 @@ const sendConnectionRequest = asyncHandler(async (req, res) => {
 // @access  Private
 const acceptConnectionRequest = asyncHandler(async (req, res) => {
     const requestId = req.params.requestId;
-    const userId = req.user._id;
+    const userId = req.user.id;
 
     if (!requestId) {
         return res.status(400).json({ success: false, message: 'Request ID is required' });
@@ -56,7 +56,7 @@ const acceptConnectionRequest = asyncHandler(async (req, res) => {
         return res.status(404).json({ success: false, message: 'Request not found' });
     }
 
-    if (!userId.equals(request.receiver)) {
+    if (userId !== request.receiver.toString()) {
         return res.status(403).json({ success: false, message: 'You are not authorized to accept this request' });
     }
 
@@ -79,7 +79,7 @@ const acceptConnectionRequest = asyncHandler(async (req, res) => {
 // @access  Private
 const rejectConnectionRequest = asyncHandler(async (req, res) => {
     const requestId = req.params.requestId;
-    const userId = req.user._id;
+    const userId = req.user.id;
 
     if (!requestId) {
         return res.status(400).json({ success: false, message: 'Request ID is required' });
@@ -90,7 +90,7 @@ const rejectConnectionRequest = asyncHandler(async (req, res) => {
         return res.status(404).json({ success: false, message: 'Request not found' });
     }
 
-    if (!userId.equals(request.receiver)) {
+    if ((userId !== request.receiver.toString())) {
         return res.status(403).json({ success: false, message: 'You are not authorized to reject this request' });
     }
 
@@ -112,7 +112,7 @@ const getConnectionRequests = asyncHandler(async (req, res) => {
 
     const requests = await ConnectionRequest.find({ receiver: userId, status: 'pending' }).populate('sender', 'name username');
     if (!requests || requests.length === 0) {
-        return res.status(404).json({ success: false, message: 'No pending connection requests found' });
+        return res.status(200).json({ success: false, message: 'No pending connection requests found' });
     }
 
     res.status(200).json({ success: true, requests });
