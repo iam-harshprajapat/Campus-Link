@@ -23,7 +23,13 @@ const app = express();
 
 // Middleware to parse JSON and handle CORS
 app.use(express.json());
-app.use(cors({ origin: "https://cl-campus-link.vercel.app/" }));
+app.use(
+  cors({
+    origin: "https://cl-campus-link.vercel.app",
+    methods: "GET, POST, PUT, DELETE",
+    credentials: true,
+  })
+);
 app.use(morgan("dev"));
 
 // Connect to MongoDB
