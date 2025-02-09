@@ -23,6 +23,8 @@ import AdminLogin from "./Pages/Admin/AdminLogin";
 import AdminPanel from "./Pages/Admin/AdminPanel";
 import UserProfile from './Pages/OtherProfile/UserProfile.js';
 import Connection from "./Pages/Connect/Connection.js";
+import TextFeed from "./Pages/LiveFeed/TextFeed.js";
+import Chat from './Pages/Chat/Chat';
 
 
 function App() {
@@ -83,10 +85,26 @@ function App() {
             }
           />
           <Route
+            path="/user/live-feed"
+            element={
+              <ProtectedRoute>
+                <TextFeed />
+              </ProtectedRoute>
+            }
+          />
+          <Route
             path="/user/connections"
             element={
               <ProtectedRoute>
                 <Connection />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/:userid/chat"
+            element={
+              <ProtectedRoute>
+                <Chat />
               </ProtectedRoute>
             }
           />

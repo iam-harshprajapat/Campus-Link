@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './ImagePost.css';
 import { BiMessageRounded, BiLike, BiSolidLike, BiTrash } from 'react-icons/bi';
 import { IoIosSend } from "react-icons/io";
@@ -15,7 +15,16 @@ const ImagePost = ({ posts, user }) => {
     const [commentText, setCommentText] = useState('');
     const dispatch = useDispatch();
     const { commentUsers } = useSelector((state) => state.posts);
-
+    const [currentUser, setCurrentUser] = useState('');
+    const getCurrentUser = async () => {
+        const res = await API.get('/auth/current-user');
+        if (res.data.success) {
+            setCurrentUser(res.data.user._id);
+        }
+    }
+    useEffect(() => {
+        getCurrentUser();
+    }, [])
     const openModal = (post) => {
         setActivePost(post);
         const userIds = post.comments.map(comment => comment.postedBy);
@@ -91,7 +100,9 @@ const ImagePost = ({ posts, user }) => {
             {activePost && (
                 <Modal closeModal={closeModal}>
                     <div className="post-modal">
-                        <BiTrash className='delete-post' onClick={() => deletePost(activePost._id)} />
+                        {currentUser === user._id &&
+                            <BiTrash className='delete-post' onClick={() => deletePost(activePost._id)} />
+                        }
                         <div className="post-image-container">
                             <img src={activePost.image} alt="Post" className="post-image" />
                         </div>

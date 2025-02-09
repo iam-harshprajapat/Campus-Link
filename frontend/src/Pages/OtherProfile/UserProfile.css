@@ -23,7 +23,7 @@
 
 .section-one .user-profile-image {
     background-position: center;
-    background-size: contain;
+    background-size: cover;
     border-radius: 50%;
     height: 100%;
     width: 100%;

@@ -9,7 +9,7 @@ import speaker from "../assets/images/speaker.png";
 import live from "../assets/images/live-stream.png";
 import link from "../assets/images/link.png";
 import user from "../assets/images/profile.png";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getCurrentUser } from "../redux/features/login/authAction";
 import Loading from "./../Components/Loading";
@@ -25,7 +25,7 @@ const HomePage = () => {
   const { data } = useSelector((state) => state.auth);
   const [result, setResult] = useState([]);
   const dispatch = useDispatch();
-
+  const navigate = useNavigate()
   useEffect(() => {
     dispatch(getCurrentUser());
   }, [dispatch]);
@@ -82,7 +82,9 @@ const HomePage = () => {
 
 
 
-
+  const profileClick = (userID) => {
+    navigate(`/${userID}`)
+  }
   if (!data || !data.user) {
     return <Loading />;
   }
@@ -103,9 +105,11 @@ const HomePage = () => {
             <div className="h-other-img">
               <img alt="notification" src={notification} />
             </div>
-            <div className="h-other-img">
-              <img alt="message" src={message} />
-            </div>
+            <Link className="h-other-img" to={`/${data.user._id}/chat`}>
+              <div className="h-other-img">
+                <img alt="message" src={message} />
+              </div>
+            </Link>
             <Link
               to={`/profile/${data.user._id}`}
               className="h-other-img"
@@ -144,10 +148,12 @@ const HomePage = () => {
               <img alt="menu-img" src={speaker} />
               <h3>Events & Announcement</h3>
             </div>
-            <div className="h-menu">
-              <img alt="menu-img" src={live} />
-              <h3>Live Feed</h3>
-            </div>
+            <Link to={'/user/live-feed'}>
+              <div className="h-menu">
+                <img alt="menu-img" src={live} />
+                <h3>Live Feed</h3>
+              </div>
+            </Link>
           </div>
           <div className="user-post-feed">
             {posts.length ? (
@@ -157,7 +163,7 @@ const HomePage = () => {
                   const isLikedByUser = post.likes.includes(data.user._id); // Check if the current user has liked the post
                   return (
                     <div className="huser-post-box" key={post._id}>
-                      <div className="user-post-header">
+                      <div className="user-post-header" onClick={() => profileClick(post.user._id)}>
                         <div
                           className="user-pro"
                           style={{

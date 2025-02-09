@@ -40,7 +40,7 @@
     border-radius: 50%;
     cursor: pointer;
     background-position: center;
-    background-size: contain;
+    background-size: cover;
 }
 
 .pending-request-card p {

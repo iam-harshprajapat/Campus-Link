@@ -14,6 +14,7 @@ import { BsThreeDotsVertical } from "react-icons/bs";
 import { IoIosCamera, IoIosText, IoMdAdd } from "react-icons/io";
 import ImageUpload from './ImageUpload';
 import TextUpload from './TextUpload';
+import ConnectionDisplayModal from './ConnectionDisplayModal';
 const ProfilePage = () => {
     const { data } = useSelector((state) => state.auth);
     const { posts, loading: postLoading } = useSelector((state) => state.posts);
@@ -110,7 +111,7 @@ const ProfilePage = () => {
                         <p className='bio' onClick={toggleBio}>
                             {showFullBio ? data.user.bio : truncatedBio}
                         </p>
-                        <h5 className='connections'>{data.user.connections.length} Links</h5>
+                        <h5 className='connections' onClick={() => openModal(4)}>{data.user.connections.length} Links</h5>
                     </div>
                     <div className='section-2'>
                         <BsThreeDotsVertical
@@ -180,6 +181,13 @@ const ProfilePage = () => {
                     activeModal === 3 &&
                     <Modal closeModal={closeModal}>
                         <TextUpload closeModal={closeModal} user={data.user} />
+                    </Modal>
+                }
+
+                {
+                    activeModal === 4 &&
+                    <Modal closeModal={closeModal}>
+                        <ConnectionDisplayModal closeModal={closeModal} user={data.user} />
                     </Modal>
                 }
             </div >
