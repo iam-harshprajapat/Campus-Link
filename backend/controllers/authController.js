@@ -4,7 +4,6 @@ const crypto = require("crypto");
 const asyncHandler = require("express-async-handler");
 const User = require("../models/User");
 const { ERROR, LOG, SUCCESS } = require("../utils/logs");
-const { log } = require("console");
 // Nodemailer transporter setup
 const transporter = nodemailer.createTransport({
   service: "gmail",

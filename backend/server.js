@@ -14,7 +14,6 @@ const adminMiddleware = require("./middlewares/adminMiddleware");
 const postRoutes = require("./routes/postRoutes");
 const profileRoute = require("./routes/profileRoute");
 const usageRoute = require("./routes/usageRoute");
-const { logRequest } = require("thirtyfour");
 // Load environment variables
 dotenv.config();
 
@@ -30,9 +29,7 @@ app.use(
     credentials: true,
   })
 );
-
-app.use(logRequest);
-
+app.use(morgan("dev")); // Logging middleware for development
 // Connect to MongoDB
 connectDB();
 
