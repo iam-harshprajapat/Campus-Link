@@ -3,7 +3,8 @@ const nodemailer = require("nodemailer");
 const crypto = require("crypto");
 const asyncHandler = require("express-async-handler");
 const User = require("../models/User");
-
+const { ERROR, LOG, SUCCESS } = require("../utils/logs");
+const { log } = require("console");
 // Nodemailer transporter setup
 const transporter = nodemailer.createTransport({
   service: "gmail",
@@ -37,6 +38,7 @@ const registerUser = asyncHandler(async (req, res) => {
     !mobile ||
     (role === "student" && !semester)
   ) {
+    ERROR("HTTP-400: All fields are required");
     return res.status(400).send({
       success: false,
       message: "All fields are required !!",
@@ -46,6 +48,7 @@ const registerUser = asyncHandler(async (req, res) => {
   // Validate role
   const validRoles = ["student", "faculty"];
   if (!validRoles.includes(role)) {
+    ERROR("HTTP-400: Provided Invalid role");
     return res.status(400).send({
       success: false,
       message: "Invalid role provided!",
@@ -56,12 +59,14 @@ const registerUser = asyncHandler(async (req, res) => {
     $or: [{ email }, { username }, { enrollmentNumber }],
   });
   if (userExists && userExists.blockedTime > Date.now()) {
+    ERROR("HTTP-423: User Exist but is blocked for some time");
     return res.status(423).send({
       success: false,
       messgae: "User is blocked for 1 hour",
     });
   }
   if (userExists) {
+    ERROR("HTTP-409: User already exist in the database");
     return res.status(409).send({
       success: false,
       message: "User already exists !!",
@@ -77,7 +82,7 @@ const registerUser = asyncHandler(async (req, res) => {
     mobile,
     semester,
     isApproved: false, //will be verified by the admin
-    otpAttempts: 0, // Initially set to 0
+    otpAttempts: 0, //Initially set to 0
     otpResendAttemps: 0, //Initially otpResendAttemps set to 0
     blockedTime: null,
   });
@@ -116,6 +121,7 @@ const registerUser = asyncHandler(async (req, res) => {
 // --------------------------------------------------SEND OTP----------------------------------------------------------------
 const sendOTP = async (user) => {
   if (user.blockedTime && user.blockedTime > Date.now()) {
+    ERROR("Unable to sent OTP. User is Blocked.");
     return {
       success: false,
       error:
@@ -127,6 +133,7 @@ const sendOTP = async (user) => {
     user.blockedTime = Date.now() + 1 * 60 * 60 * 1000; // Block for 1 hour
     user.otpResendAttemps = 0;
     await user.save();
+    ERROR("Unable to resend OTP. User has attempted more than 3 times.");
     return {
       success: false,
       error:
@@ -136,6 +143,7 @@ const sendOTP = async (user) => {
 
   // Generate OTP and set expiration time
   const otp = crypto.randomInt(100000, 999999).toString(); // Generates a 6-digit OTP
+
   const otpExpires = Date.now() + 10 * 60 * 1000; // OTP is valid for 10 minutes
   // Send OTP via email
   try {
@@ -147,12 +155,15 @@ const sendOTP = async (user) => {
     });
     user.otpResendAttemps += 1;
     await user.save();
+    LOG("OTP has been generated and sent successfully.");
     return {
       success: true,
       otp,
       otpExpires,
     };
   } catch (error) {
+    ERROR("Unable to sent OTP: ");
+    ERROR(error);
     return {
       success: false,
       error: error.message,
@@ -169,6 +180,7 @@ const resendOtp = asyncHandler(async (req, res) => {
 
   const user = await User.findOne({ email });
   if (!user) {
+    ERROR("Unable to resent OTP. User not found in database.");
     return res.status(400).send({
       success: false,
       message: "User not found",
@@ -203,12 +215,14 @@ const verifyOtp = asyncHandler(async (req, res) => {
   const user = await User.findOne({ email });
 
   if (!user) {
+    ERROR("HTTP-400: Unable to Verify OTP. Registration Data not found");
     return res.status(400).send({
       success: false,
       message: "Registration Data not found",
     });
   }
   if (user.blockedTime > Date.now()) {
+    ERROR("Unable to Verify OTP. User is blocked for some time.");
     return res.status(400).send({
       success: false,
       messgae: "User is blocked. Please try after some time...",
@@ -216,6 +230,7 @@ const verifyOtp = asyncHandler(async (req, res) => {
   }
   // Check if OTP has expired
   if (user.otpExpires <= Date.now()) {
+    ERROR("HTTP-400: Unable to Verify OTP. OTP has been expired");
     return res.status(400).send({
       success: false,
       message: "OTP Expired! request new one",
@@ -231,6 +246,7 @@ const verifyOtp = asyncHandler(async (req, res) => {
     user.otpResendAttemps = 0;
     user.blockedTime = null;
     await user.save();
+    SUCCESS("OTP verified successfully.");
     if (user.role === "admin") {
       const token = generateToken(user._id, user.role);
       return res.status(200).send({
@@ -249,6 +265,7 @@ const verifyOtp = asyncHandler(async (req, res) => {
     });
   } else {
     // OTP is incorrect
+    ERROR("Invalid OTP.");
     user.otpAttempts += 1; // Increment attempts
     if (user.otpAttempts >= 4) {
       user.otpAttempts = 0;

@@ -1,6 +1,5 @@
 const express = require("express");
-const mongoose = require("mongoose");
-const cors = require("cors");
+const cors = require("cors"); //cross origin resource sharing
 const colors = require("colors");
 const morgan = require("morgan");
 const dotenv = require("dotenv");
@@ -15,6 +14,7 @@ const adminMiddleware = require("./middlewares/adminMiddleware");
 const postRoutes = require("./routes/postRoutes");
 const profileRoute = require("./routes/profileRoute");
 const usageRoute = require("./routes/usageRoute");
+const { logRequest } = require("thirtyfour");
 // Load environment variables
 dotenv.config();
 
@@ -30,7 +30,8 @@ app.use(
     credentials: true,
   })
 );
-app.use(morgan("dev"));
+
+app.use(logRequest);
 
 // Connect to MongoDB
 connectDB();

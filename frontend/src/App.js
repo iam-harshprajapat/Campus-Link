@@ -2,7 +2,6 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "bootstrap/dist/css/bootstrap.min.css";
 import PublicRoute from "./Components/Routes/PublicRoutes";
 import ProtectedRoute from "./Components/Routes/ProtectedRoutes";
 //Pages
@@ -21,11 +20,10 @@ import NotesList from "./Pages/Notes/NotesList";
 import ProfilePage from "./Pages/Profile/ProfilePage";
 import AdminLogin from "./Pages/Admin/AdminLogin";
 import AdminPanel from "./Pages/Admin/AdminPanel";
-import UserProfile from './Pages/OtherProfile/UserProfile.js';
+import UserProfile from "./Pages/OtherProfile/UserProfile.js";
 import Connection from "./Pages/Connect/Connection.js";
 import TextFeed from "./Pages/LiveFeed/TextFeed.js";
-import Chat from './Pages/Chat/Chat';
-
+import Chat from "./Pages/Chat/Chat";
 
 function App() {
   return (
