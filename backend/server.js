@@ -1,5 +1,6 @@
 const express = require("express");
 const cors = require("cors"); //cross origin resource sharing
+const cookieParser = require("cookie-parser");
 const colors = require("colors");
 const morgan = require("morgan");
 const dotenv = require("dotenv");
@@ -19,14 +20,15 @@ dotenv.config();
 
 // Initialize the Express app
 const app = express();
+app.use(cookieParser());
 
 // Middleware to parse JSON and handle CORS
 app.use(express.json());
 app.use(
   cors({
-    origin: "*",
+    origin: ["https://cl-campus-link.vercel.app", "https://campus-link-migrated.vercel.app", "http://localhost:3000"],
     methods: "GET, POST, PUT, DELETE, PATCH",
-    credentials: false,
+    credentials: true,
   })
 );
 app.use(morgan("dev")); // Logging middleware for development

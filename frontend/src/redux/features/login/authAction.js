@@ -11,7 +11,7 @@ export const loginUser = createAsyncThunk(
             const payload = {};
             payload.email = email;
             payload.password = password;
-            const response = await API.post('/auth/login', payload);
+            const response = await API.post('/auth/login', payload, {withCredentials: true});
             return response.data;
         } catch (error) {
             if (error.response) {

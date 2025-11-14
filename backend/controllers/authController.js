@@ -329,6 +329,15 @@ const loginUser = asyncHandler(async (req, res) => {
     //     });
     // }
     // }
+
+    const token = generateToken(user._id, user.role);
+    res.cookie("token", token, {
+      httpOnly: true,
+      secure: true,            // must be true on production with https
+      sameSite: "none",        // important for cross-site
+      maxAge: 24 * 60 * 60 * 1000, // 1 day
+    });
+
     res.status(200).send({
       success: true,
       message: "Logged in successfully",
@@ -337,8 +346,9 @@ const loginUser = asyncHandler(async (req, res) => {
       username: user.username,
       email: user.email,
       role: user.role,
-      token: generateToken(user._id, user.role),
+      token: token,
     });
+
   } else {
     res.status(401).send({
       success: false,
