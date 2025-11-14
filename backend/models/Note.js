@@ -18,7 +18,7 @@ const noteSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    file: {
+    fileUrl: {
       type: String, // Store the file path or URL
       required: true,
     },
