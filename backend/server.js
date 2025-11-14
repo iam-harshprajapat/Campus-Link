@@ -26,7 +26,7 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(
   cors({
-    origin: ["https://cl-campus-link.vercel.app", "https://campus-link-migrated.vercel.app", "http://localhost:3000"],
+    origin: "*",
     methods: "GET, POST, PUT, DELETE, PATCH",
     credentials: true,
   })
