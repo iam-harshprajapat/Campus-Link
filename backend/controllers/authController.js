@@ -331,12 +331,12 @@ const loginUser = asyncHandler(async (req, res) => {
     // }
 
     const token = generateToken(user._id, user.role);
-    res.cookie("token", token, {
-      httpOnly: true,
-      secure: true,            // must be true on production with https
-      sameSite: "none",        // important for cross-site
-      maxAge: 24 * 60 * 60 * 1000, // 1 day
-    });
+    // res.cookie("token", token, {
+    //   httpOnly: true,
+    //   secure: true,            // must be true on production with https
+    //   sameSite: "none",        // important for cross-site
+    //   maxAge: 24 * 60 * 60 * 1000, // 1 day
+    // });
 
     res.status(200).send({
       success: true,
