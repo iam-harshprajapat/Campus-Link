@@ -5,45 +5,44 @@ const Note = require('../models/Note');
 // @desc    Upload a new note
 // @route   POST /api/notes/upload
 // @access  Private
-const uploadNote = asyncHandler((req, res) => {
-    uploadNoteFile(req, res, async (err) => {
-        if (err) {
-            return res.status(400).json({ success: false, message: err });
-        } else {
-            if (!req.file) {
-                return res.status(400).json({ success: false, message: 'No file selected!' });
-            }
+const uploadNote = async (req, res) => {
+    try {
+        const { course, semester, subject, title, fileUrl, fileType, fileSize } = req.body;
+        const userId = req.user.id;
 
-            const { course, semester, subject, title } = req.body;
-
-            if (!course || !semester || !subject || !title) {
-                return res.status(400).json({ success: false, message: 'Please provide course, semester, subject and Title!' });
-            }
-
-            try {
-                // Create a new note entry
-                const newNote = new Note({
-                    course,
-                    semester,
-                    subject,
-                    title, // File name as title
-                    file: req.file.path, // File path for the uploaded note
-                    fileType: req.file.mimetype, // Store the file type
-                    uploadedBy: req.user.id, // The user who uploaded the note
-                });
-
-                // Save the note to the database
-                const note = await newNote.save();
-
-                // Send success response
-                return res.status(201).json({ success: true, note });
-            } catch (saveError) {
-                console.error(saveError);
-                return res.status(500).json({ success: false, message: 'Server error while saving the note.' });
-            }
+        if (!course || !semester || !subject || !title || !fileSize || !fileType || !fileUrl) {
+            return res.status(400).send({
+                success: false,
+                message: "All fields required",
+                requiredFields: "course, semester, subject, title, fileUrl, fileType, fileSize"
+            });
         }
-    });
-});
+
+        await Note.create({
+            course,
+            semester,
+            subject,
+            title,
+            fileUrl,
+            fileType,
+            fileSize,
+            uploadedBy: userId
+        });
+
+        return res.status(201).send({
+            success: true,
+            message: "Note uploaded successfully"
+        });
+
+    } catch (error) {
+        console.log("[ERROR]: ", error);
+        return res.status(500).send({
+            success: false,
+            message: "Internal Server Error",
+            error
+        });
+    }
+};
 
 
 // @desc    Get all courses with notes

@@ -18,9 +18,13 @@ const noteSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    file: {
+    fileUrl: {
       type: String, // Store the file path or URL
       required: true,
+    },
+    fileSize: {
+      type: String,
+      required: true
     },
     fileType: {
       type: String, // Store file type (pdf, jpg, pptx, doc, etc.)
@@ -30,10 +34,6 @@ const noteSchema = mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User", // Reference to the user who uploaded the note
       required: true,
-    },
-    createdAt: {
-      type: Date,
-      default: Date.now,
     },
   },
   {

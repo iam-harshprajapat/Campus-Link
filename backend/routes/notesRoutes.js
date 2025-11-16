@@ -17,3 +17,5 @@ router.get('/courses/:course/semesters/:semester/subjects', authMiddleware, getS
 router.get('/courses/:course/semesters/:semester/subjects/:subject', authMiddleware, getNotesBySubject);
 
 module.exports = router;
+
+
